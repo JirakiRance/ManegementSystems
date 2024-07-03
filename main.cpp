@@ -7,7 +7,7 @@ int main()
 
 	int usrNum = 0;	//选择最大随机数
 	std::cin >> usrNum;
-	if (!usrNum)
+	if (usrNum<1)
 	{
 		std::cout << "进程已结束，欢迎下次使用Ciallo～(∠·ω< )⌒ ★" << std::endl;
 		system("pause");
