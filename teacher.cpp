@@ -175,8 +175,8 @@ void Teacher::validOrder()
     {
         std::cout << "-------------------\n";
         std::cout << "\t预约号\t学生学号\t预约时段\t预约状态\n";
-        int examineSelect = 0;
-        int examineOK = 0;
+        int examineOrderSelect = 0;//选择订单号
+        int passSelect = 0;//判断通不通过，排除杂项
         for (std::vector<Order>::iterator it = vSubOrder.begin(); it != vSubOrder.end(); it++)
         {
             std::string timeStr = getTimeStr(it->oTime.weekTime, it->oTime.dayTime);
@@ -185,21 +185,35 @@ void Teacher::validOrder()
         }
         std::cout << "-------------------\n";
         std::cout << "请选择一条记录：\n";
-        std::cin >> examineSelect;
+        std::cin >> examineOrderSelect;
+        //判断记录合法性
+        bool selectOrderOk = false;//判断Order订单号合不合法
+        for (auto& od : vSubOrder)
+        {
+            if (od.orderId== examineOrderSelect)
+            {
+                selectOrderOk = true;
+            }
+        }
+        if (!selectOrderOk)
+        {
+            std::cout << "不正确的记录号！\n";
+            return;
+        }
         std::cout << "是否通过？\n1.通过\n2.不通过\n";
         while (1)
         {
-            std::cin >> examineOK;
-            if (examineOK != 1 && examineOK != 2)
+            std::cin >> passSelect;
+            if (passSelect != 1 && passSelect != 2)
                 continue;
             break;
         }
         //选好了，改状态
         for (std::vector<Order>::iterator it = vOrder.begin(); it != vOrder.end(); it++)
         {
-            if (it->orderId == examineSelect)
+            if (it->orderId == examineOrderSelect)
             {
-                if (examineOK == 1)
+                if (passSelect == 1)
                 {
                     it->teaId = this->m_Id;
                     it->oInfo = SUCCEED;
